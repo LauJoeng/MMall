@@ -18,6 +18,13 @@
   <sql id="Base_Column_List">
     id, username, password, email, phone, question, answer, role, create_time, update_time
   </sql>
+
+  <select id="checkPassword" parameterType="map" resultType="int">
+    select count(1)
+    from mmall_user
+    where id = #{userId}
+          and password = #{password}
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -38,6 +45,22 @@
   <select id="checkEmail" resultType="java.lang.Integer">
     select count(1) from mmall_user
     where email = #{email}
+  </select>
+  <select id="selectQuestionByUsername" resultType="java.lang.String" parameterType="string">
+    select question from mmall_user where username = #{username}
+  </select>
+  <select id="checkAnswer" resultType="java.lang.Integer" parameterType="map">
+     select
+       count(1)
+     from mmall_user
+     where username = #{username} and
+       question = #{question} and
+       answer = #{answer}
+  </select>
+  <select id="checkEmailByUserId" resultType="java.lang.Integer" parameterType="map">
+    select count(1) from mmall_user
+    where email = #{email}
+    and id != #{userId}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_user
@@ -166,4 +189,10 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updatePasswordByUsername" parameterType="map">
+      update mmall_user
+      set password = #{newPassword},update_time = now()
+      where username=#{username}
+  </update>
+
 </mapper>
