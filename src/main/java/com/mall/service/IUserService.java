@@ -1,7 +1,10 @@
 package com.mall.service;
 
 import com.mall.common.ServerResponse;
+import com.mall.pojo.Category;
 import com.mall.pojo.User;
+
+import java.util.List;
 
 public interface IUserService {
     ServerResponse<User> login(String username, String password);
@@ -16,4 +19,5 @@ public interface IUserService {
 
 
     ServerResponse checkAdminRole(User user);
+
 }
