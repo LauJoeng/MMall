@@ -27,6 +27,7 @@ public class UserController {
         if(response.isSuccess()){
             session.setAttribute(Const.CURRENT_USER,response.getData());
         }
+        System.out.println(session.getAttribute(Const.CURRENT_USER));
         return response;
     }
 
@@ -52,6 +53,7 @@ public class UserController {
     @RequestMapping(value = "get_user_info.do",method = RequestMethod.POST)
     public ServerResponse<User>getUserInfo(HttpSession session){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
+        System.out.println(user);
         if(user != null){
             return ServerResponse.createBySuccess(user);
         }

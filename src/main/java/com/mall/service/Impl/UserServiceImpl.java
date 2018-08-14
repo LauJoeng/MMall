@@ -11,7 +11,6 @@ import com.mall.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.security.provider.MD5;
 
 import java.util.UUID;
 
@@ -122,7 +121,7 @@ public class UserServiceImpl implements IUserService {
         }
         if(StringUtils.equals(forgetToken,token)){
             String md5Password = MD5Util.MD5EncodeUtf8(newPassword);
-            int rowCount = userMapper.updatePasswordByUsername(username,newPassword);
+            int rowCount = userMapper.updatePasswordByUsername(username,md5Password);
             if(rowCount > 0){
                 return ServerResponse.createBySuccessMessage("密码修改成功");
             }
@@ -156,6 +155,7 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("email已存在，请更换email再尝试更新");
         }
         User updateUser = new User();
+        updateUser.setUsername(user.getUsername());
         updateUser.setId(user.getId());
         updateUser.setEmail(user.getEmail());
         updateUser.setPhone(user.getPhone());
@@ -177,5 +177,13 @@ public class UserServiceImpl implements IUserService {
         }
         user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
+    }
+
+    @Override
+    public ServerResponse checkAdminRole(User user) {
+        if(user != null && user.getRole().intValue() == Const.Role.ROLE_ADMIN){
+            return ServerResponse.createBySuccess();
+        }
+        return ServerResponse.createByError();
     }
 }
