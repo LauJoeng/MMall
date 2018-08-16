@@ -27,7 +27,7 @@
     from mmall_product
     where id = #{id,jdbcType=INTEGER}
   </select>
-    <select id="selectList" resultMap="com.mall.dao.CartMapper.BaseResultMap">
+    <select id="selectList" resultMap="BaseResultMap">
       select
       <include refid="Base_Column_List"/>
       from mmall_product
@@ -36,7 +36,7 @@
   <select id="selectByNameAndProductId" resultMap="BaseResultMap" parameterType="map">
       select
       <include refid="Base_Column_List"/>
-      from mmall
+      from mmall_product
       <where>
           <if test="productName != null">
             and name like #{productName}
@@ -46,7 +46,22 @@
           </if>
       </where>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_product
+        where status = 1
+        <if test="keyword != null">
+          and name like #{keyword}
+        </if>
+        <if test="categoryIdList != null">
+          and category_id in
+          <foreach collection="categoryIdList" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+          </foreach>
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from mmall_product
     where id = #{id,jdbcType=INTEGER}
   </delete>
