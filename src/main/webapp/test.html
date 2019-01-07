@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+</style>
+<body>
+<input type="button" value="按钮" id="button"/>
+<script type="text/javascript">
+    document.getElementById("button").addEventListener("click",fun);
+    function fun() {
+        alert("123");
+        document.getElementById("button").removeEventListener("click",fun);
+    }
+</script>
+</body>
+</html>
